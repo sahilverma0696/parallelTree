@@ -1,16 +1,18 @@
 #include "../src/lib/ntree/ntree.hpp"
-
+#include <random>
 
 
 std::vector<int> randomValues(int number, int min, int max)
 {
     std::vector<int> values;
-    srand((unsigned) time(0));
-    int randomNumber;
-    for (int index = 0; index < number; index++) {
-        randomNumber = (rand() % max) + min;
-        values.push_back(randomNumber);
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    for(int i = 0;i<number;i++)
+    {
+        std::uniform_int_distribution<std::mt19937::result_type> dist6(min,max); // distribution in range [1, 6]
+        values.push_back(dist6(rng));
     }
+
     return values;
 }
 
@@ -22,13 +24,13 @@ int main()
     values.push_back({{0}});
 
     int level = 5;
-    int maxChild = 5;
+    int maxChild = 2;
     for(int i = 1;i<=level;i++)
     {
         std::vector<std::vector<int>> levelVec;
         for(int j = 0;j<i;j++)
         {
-            levelVec.push_back(randomValues(5,1,100));
+            levelVec.push_back(randomValues(maxChild,1,100));
         }
         values.push_back(levelVec);
         
